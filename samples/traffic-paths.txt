@@ -4,3 +4,4 @@
 /health?sample=2023-04-11
 /health?sample=2023-05-08
 /health?sample=2023-05-31
+/health?sample=2023-06-20
