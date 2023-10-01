@@ -9,3 +9,4 @@
 /health?sample=2023-08-05
 /health?sample=2023-08-24
 /health?sample=2023-09-09
+/health?sample=2023-10-01
