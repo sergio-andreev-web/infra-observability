@@ -11,3 +11,4 @@
 /health?sample=2023-09-09
 /health?sample=2023-10-01
 /health?sample=2023-11-14
+/health?sample=2023-12-07
