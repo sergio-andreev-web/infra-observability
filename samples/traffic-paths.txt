@@ -22,3 +22,4 @@
 /health?sample=2024-07-29
 /health?sample=2024-08-11
 /health?sample=2024-08-27
+/health?sample=2024-09-07
