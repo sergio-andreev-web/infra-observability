@@ -26,3 +26,4 @@
 /health?sample=2024-10-04
 /health?sample=2024-10-30
 /health?sample=2024-11-24
+/health?sample=2024-12-18
