@@ -28,3 +28,4 @@
 /health?sample=2024-11-24
 /health?sample=2024-12-18
 /health?sample=2025-01-09
+/health?sample=2025-01-27
