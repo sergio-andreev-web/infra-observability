@@ -36,3 +36,4 @@
 /health?sample=2025-05-01
 /health?sample=2025-05-28
 /health?sample=2025-06-13
+/health?sample=2025-07-18
