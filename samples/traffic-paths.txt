@@ -39,3 +39,4 @@
 /health?sample=2025-07-18
 /health?sample=2025-08-06
 /health?sample=2025-08-21
+/health?sample=2025-09-09
