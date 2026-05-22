@@ -49,3 +49,4 @@
 /health?sample=2026-03-07
 /health?sample=2026-04-13
 /health?sample=2026-05-05
+/health?sample=2026-05-22
