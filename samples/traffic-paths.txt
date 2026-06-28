@@ -51,3 +51,4 @@
 /health?sample=2026-05-05
 /health?sample=2026-05-22
 /health?sample=2026-06-13
+/health?sample=2026-06-28
