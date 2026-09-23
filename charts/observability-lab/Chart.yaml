@@ -1,0 +1,6 @@
+apiVersion: v2
+name: observability-lab
+version: 0.1.0
+appVersion: "1.0"
+description: Monitoring components for a small service cluster
+type: application

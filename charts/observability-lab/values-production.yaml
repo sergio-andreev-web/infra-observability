@@ -1,0 +1,219 @@
+global:
+  imagePullPolicy: IfNotPresent
+components:
+  nginx:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+  nginxExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  blackboxExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  prometheus:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+  alertmanager:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  grafana:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  loki:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  promtail:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  tempo:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  otelCollector:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  nodeExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  kubeStateMetrics:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  cadvisor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  postgresExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  redisExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  processExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  pushgateway:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+  statsdExporter:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1

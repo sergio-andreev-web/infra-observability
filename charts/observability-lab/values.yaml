@@ -1,0 +1,533 @@
+global:
+  imagePullPolicy: IfNotPresent
+  podSecurityContext:
+    runAsNonRoot: false
+  annotations: {}
+  labels: {}
+
+components:
+  nginx:
+    enabled: true
+    image: nginx:1.27-alpine
+    replicas: 1
+    port: 80
+    probePath: /health
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  nginxExporter:
+    enabled: true
+    image: nginx/nginx-prometheus-exporter:1.4.2
+    replicas: 1
+    port: 9113
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  blackboxExporter:
+    enabled: true
+    image: prom/blackbox-exporter:v0.25.0
+    replicas: 1
+    port: 9115
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  prometheus:
+    enabled: true
+    image: prom/prometheus:v2.55.1
+    replicas: 1
+    port: 9090
+    probePath: /-/healthy
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  alertmanager:
+    enabled: false
+    image: prom/alertmanager:v0.27.0
+    replicas: 1
+    port: 9093
+    probePath: /-/healthy
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  grafana:
+    enabled: false
+    image: grafana/grafana:11.3.0
+    replicas: 1
+    port: 3000
+    probePath: /api/health
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  loki:
+    enabled: false
+    image: grafana/loki:3.2.0
+    replicas: 1
+    port: 3100
+    probePath: /ready
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  promtail:
+    enabled: false
+    image: grafana/promtail:3.2.0
+    replicas: 1
+    port: 9080
+    probePath: /ready
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  tempo:
+    enabled: false
+    image: grafana/tempo:2.6.0
+    replicas: 1
+    port: 3200
+    probePath: /ready
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  otelCollector:
+    enabled: false
+    image: otel/opentelemetry-collector:0.113.0
+    replicas: 1
+    port: 8888
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  nodeExporter:
+    enabled: false
+    image: prom/node-exporter:v1.8.2
+    replicas: 1
+    port: 9100
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  kubeStateMetrics:
+    enabled: false
+    image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.14.0
+    replicas: 1
+    port: 8080
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  cadvisor:
+    enabled: false
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    replicas: 1
+    port: 8080
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  postgresExporter:
+    enabled: false
+    image: prometheuscommunity/postgres-exporter:v0.16.0
+    replicas: 1
+    port: 9187
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  redisExporter:
+    enabled: false
+    image: oliver006/redis_exporter:v1.66.0
+    replicas: 1
+    port: 9121
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  processExporter:
+    enabled: false
+    image: ncabatoff/process-exporter:0.8.4
+    replicas: 1
+    port: 9256
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  pushgateway:
+    enabled: false
+    image: prom/pushgateway:v1.10.0
+    replicas: 1
+    port: 9091
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+  statsdExporter:
+    enabled: false
+    image: prom/statsd-exporter:v0.27.1
+    replicas: 1
+    port: 9102
+    probePath: /metrics
+    args: []
+    env: []
+    config: ""
+    configKey: config.yml
+    configMountPath: /etc/observability/config.yml
+    serviceType: ClusterIP
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    podAnnotations: {}
+    podLabels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    networkPolicy:
+      enabled: false
+
+# Core component arguments and configuration.
+

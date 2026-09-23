@@ -1,0 +1,164 @@
+{{- if .Values.components.tempo.enabled }}
+{{- $ctx := dict "Release" .Release "Chart" .Chart "component" "tempo" -}}
+{{- $component := .Values.components.tempo -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "observability.name" $ctx }}
+  labels:
+    {{- include "observability.labels" $ctx | nindent 4 }}
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "observability.name" $ctx }}-config
+  labels:
+    {{- include "observability.labels" $ctx | nindent 4 }}
+data:
+  {{ $component.configKey }}: |
+{{ $component.config | indent 4 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "observability.name" $ctx }}
+  labels:
+    {{- include "observability.labels" $ctx | nindent 4 }}
+spec:
+  replicas: {{ $component.replicas }}
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "observability.selectorLabels" $ctx | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "observability.selectorLabels" $ctx | nindent 8 }}
+        {{- with $component.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ $component.config | sha256sum }}
+        {{- with $component.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "observability.name" $ctx }}
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets: []
+      nodeSelector:
+        {{- toYaml $component.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml $component.tolerations | nindent 8 }}
+      affinity:
+        {{- toYaml $component.affinity | nindent 8 }}
+      containers:
+        - name: tempo
+          image: {{ $component.image | quote }}
+          imagePullPolicy: {{ $.Values.global.imagePullPolicy }}
+          {{- with $component.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $component.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ $component.port }}
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: {{ $component.probePath }}
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: {{ $component.probePath }}
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 5
+          startupProbe:
+            httpGet:
+              path: {{ $component.probePath }}
+              port: http
+            periodSeconds: 5
+            failureThreshold: 12
+          resources:
+            {{- toYaml $component.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: {{ $component.configMountPath }}
+              subPath: {{ $component.configKey }}
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "observability.name" $ctx }}-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "observability.name" $ctx }}
+  labels:
+    {{- include "observability.labels" $ctx | nindent 4 }}
+spec:
+  type: {{ $component.serviceType }}
+  selector:
+    {{- include "observability.selectorLabels" $ctx | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ $component.port }}
+      targetPort: http
+      protocol: TCP
+{{- if $component.podDisruptionBudget.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "observability.name" $ctx }}
+  labels:
+    {{- include "observability.labels" $ctx | nindent 4 }}
+spec:
+  minAvailable: {{ $component.podDisruptionBudget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "observability.selectorLabels" $ctx | nindent 6 }}
+{{- end }}
+{{- if $component.networkPolicy.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "observability.name" $ctx }}
+  labels:
+    {{- include "observability.labels" $ctx | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "observability.selectorLabels" $ctx | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: {{ $component.port }}
+  egress:
+    - to:
+        - podSelector: {}
+{{- end }}
+{{- end }}
