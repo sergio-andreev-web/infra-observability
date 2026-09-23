@@ -1,0 +1,27 @@
+groups:
+  - name: web-health
+    rules:
+      - alert: WebEndpointDown
+        expr: probe_success{job="web-probe"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Web health endpoint is failing
+          description: The HTTP probe has failed for at least two minutes.
+
+      - alert: NginxExporterDown
+        expr: up{job="nginx-exporter"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Nginx metrics are unavailable
+
+      - alert: HighNginxConnections
+        expr: nginx_connections_active > 100
+        for: 5m
+        labels:
+          severity: info
+        annotations:
+          summary: Nginx has over 100 active connections

@@ -1,1 +1,21 @@
-<!doctype html><html><head><title>Observability Lab</title></head><body><h1>Observability Lab</h1><p>Nginx, exporter, and Prometheus.</p></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Observability Lab</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Infrastructure demo</p>
+    <h1>Observability Lab</h1>
+    <p>Nginx serves this page while Prometheus collects service and HTTP probe metrics.</p>
+    <div class="grid">
+      <a href="/health"><strong>Health</strong><span>Web response</span></a>
+      <a href="http://localhost:9090/targets"><strong>Targets</strong><span>Prometheus scrapes</span></a>
+      <a href="http://localhost:9090/alerts"><strong>Alerts</strong><span>Health rules</span></a>
+    </div>
+  </main>
+</body>
+</html>
